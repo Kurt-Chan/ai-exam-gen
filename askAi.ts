@@ -1,7 +1,6 @@
 import { generateEmbedding } from "./generateEmbeddings";
 import { HuggingFaceInference } from "@langchain/community/llms/hf";
 import { RunnableSequence } from "@langchain/core/runnables";
-import { Document } from "@langchain/core/documents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { client, indexName } from "./upsert";
 import dotenv from "dotenv";
