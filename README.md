@@ -18,6 +18,15 @@ It is just mainly a prompt, a very long huge prompt that will help you to genera
 -
 **RAG (Retrieval-Augmented)** approach was my go-to. Using NodeJS, Pinecone as my vector database and Qwen as my LLM. I managed to let the LLM to have more understanding about Bloom's Taxonomy and generate a more accurate questions.
 
+**Code Workflow**
+
+ 1. Scrape texts from URLs about Bloom's Taxonomy
+ 2. Chunks the scraped texts and convert it to vectorized chunks of data
+ 3. Upsert this data to the Pinecone index
+ 4. When a user wants to generate a question based on the given level, user query will be embedded
+ 5. Query this to the Pinecone index
+ 6. Generate the questions.
+
 **Tech Stack**
 
  - NodeJs
@@ -27,5 +36,5 @@ It is just mainly a prompt, a very long huge prompt that will help you to genera
  **Future Plan**
  
  To make this a full stack application using NextJS, which is a framework I am not familiar with (but I have knowledge about it).
-
+ 
 Thanks!
