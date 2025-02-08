@@ -17,7 +17,7 @@ Each question must:
 
 // Initialize the HuggingFace model
 const model = new HuggingFaceInference({
-  model: "Qwen/QwQ-32B-Preview",
+  model: process.env.HF_MODEL,
   apiKey: process.env.HF_ACCESSTOKEN,
 });
 
