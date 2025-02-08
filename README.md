@@ -25,5 +25,7 @@ It is just mainly a prompt, a very long huge prompt that will help you to genera
  - [Huggingface](https://huggingface.co/)
  
  **Future Plan**
+ 
  To make this a full stack application using NextJS, which is a framework I am not familiar with (but I have knowledge about it).
+
 Thanks!
