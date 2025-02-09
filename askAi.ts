@@ -74,12 +74,7 @@ const askAi = async () => {
                       preferred type of questions (e.g., true or false, short answer, multiple-choice). 
                       
                       The user will specify the level of difficulty based on the Revised Bloom's Taxonomy: 
-                      1. **Remembering:** Recall facts and basic concepts.
-                      2. **Understanding:** Explain ideas or concepts.
-                      3. **Applying:** Use information in new situations.
-                      4. **Analyzing:** Break down information into parts.
-                      5. **Evaluating:** Make judgments based on criteria and standards.
-                      6. **Creating:** Put parts together to form a coherent whole.
+                      {content}
 
                     **Output Requirements**:
                         - Always generate the questions and answers in the following format:
