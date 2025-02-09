@@ -1,20 +1,14 @@
 import { generateEmbedding } from "./generateEmbeddings";
 import { HuggingFaceInference } from "@langchain/community/llms/hf";
 import { RunnableSequence } from "@langchain/core/runnables";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { ChatPromptTemplate, PromptTemplate } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "langchain/output_parsers";
 import { client, indexName } from "./upsert";
 import {Schema, z} from "zod";
 import dotenv from "dotenv";
 dotenv.config();
 
-const question = `Generate exactly 5 Multiple-choice questions that assess the Understanding level of Bloom's Taxonomy. The questions should be based solely on the following content or topic:
-    "Data Structures & Algorithms"
-
-Each question must:
-- Start with Number 1.
-- Focus on the Understanding level (e.g., Understanding behavior).
-- Clearly specify the correct answer.`;
+const question = `Generate exactly 5 multiple-choice questions that assess the **Remembering** level of Bloom's Taxonomy. The questions should be based solely on the following content or topic:\n    \"Web Development\"\n\nEach question must:\n- - Start with Number 1.\n- Focus on the Remembering level (e.g., Remembering behavior).\n- Clearly specify the correct answer.\n\nDo not provide explanations for the answers. Only include the questions and answers in the output.`;
 
 // Initialize the HuggingFace model
 const model = new HuggingFaceInference({
@@ -49,16 +43,43 @@ const askAi = async () => {
         .join(" ");
 
       // Create a chat-based prompt template
-      const prompt = ChatPromptTemplate.fromMessages([
-        [
-          "system",
-          `You are an expert teacher assistant specializing in creating examination questions. 
-                      You will help the user by generating tricky examination questions 
+      // const prompt = ChatPromptTemplate.fromMessages([
+      //   [
+      //     "system",
+      //       `You are an expert teacher assistant specializing in creating examination questions. 
+      //                 You will help the user by generating tricky examination questions 
+      //                 based on the content, paragraph, or topic they provide and their 
+      //                 preferred type of questions (e.g., true or false, short answer, multiple-choice). 
+                      
+      //                 The user will specify the level of difficulty based on the Revised Bloom's Taxonomy: 
+      //                 {content}
+
+      //               **Output Requirements**:
+      //                   - Always generate the questions and answers in the following format:
+      //                   {format_instructions}
+
+      //                 Instructions:
+      //                 - Directly generate the requested questions and answers. 
+      //                 - Do not provide any commentary, explanations, or context about the topic or your process.
+      //                 - Do not think step-by-step or describe your reasoning.
+      //                 - If you encounter unfamiliar content, still generate questions based on the provided instructions.
+      //                 - Your output must only include the generated questions and their answers in the exact requested format.`
+      //   ],
+      //   ["user", "{user_query}"],
+      // ]);
+
+      const prompt = PromptTemplate.fromTemplate(`You are an expert teacher assistant specializing in creating examination questions. 
+                      You generate tricky examination questions 
                       based on the content, paragraph, or topic they provide and their 
                       preferred type of questions (e.g., true or false, short answer, multiple-choice). 
                       
                       The user will specify the level of difficulty based on the Revised Bloom's Taxonomy: 
-                      {content}
+                      1. **Remembering:** Recall facts and basic concepts.
+                      2. **Understanding:** Explain ideas or concepts.
+                      3. **Applying:** Use information in new situations.
+                      4. **Analyzing:** Break down information into parts.
+                      5. **Evaluating:** Make judgments based on criteria and standards.
+                      6. **Creating:** Put parts together to form a coherent whole.
 
                     **Output Requirements**:
                         - Always generate the questions and answers in the following format:
@@ -70,10 +91,10 @@ const askAi = async () => {
                       - Do not think step-by-step or describe your reasoning.
                       - If you encounter unfamiliar content, still generate questions based on the provided instructions.
                       - Your output must only include the generated questions and their answers in the exact requested format.
-            `
-        ],
-        ["user", "{user_query}"],
-      ]);
+                      
+                      Here is the query: {user_query}
+
+                      `);
 
       // Define the JSON schema for the desired output structure
     const schema = z.object({
