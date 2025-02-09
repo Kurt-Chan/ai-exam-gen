@@ -8,13 +8,13 @@ import {Schema, z} from "zod";
 import dotenv from "dotenv";
 dotenv.config();
 
-const question = `Generate exactly 5 multiple-choice questions that assess the **Remembering** level of Bloom's Taxonomy. The questions should be based solely on the following content or topic:\n    \"Web Development\"\n\nEach question must:\n- - Start with Number 1.\n- Focus on the Remembering level (e.g., Remembering behavior).\n- Clearly specify the correct answer.\n\nDo not provide explanations for the answers. Only include the questions and answers in the output.`;
+const question = `Generate exactly 5 multiple-choice questions that assess the **Applying** level of Bloom's Taxonomy. The questions should be based solely on the following content or topic:\n    \"Data Structures & Algorithms\"\n\nEach question must:\n- - Start with Number 1.\n- Focus on the Applying level (e.g., Applying behavior).\n- Clearly specify the correct answer.\n\nDo not provide explanations for the answers. Only include the questions and answers in the output.`;
 
 // Initialize the HuggingFace model
 const model = new HuggingFaceInference({
   model: process.env.HF_MODEL,
   apiKey: process.env.HF_ACCESSTOKEN,
-  temperature: 0.5
+  temperature: 0.5,
 });
 
 const askAi = async () => {
@@ -73,19 +73,16 @@ const askAi = async () => {
                       based on the content, paragraph, or topic they provide and their 
                       preferred type of questions (e.g., true or false, short answer, multiple-choice). 
                       
-                      The user will specify the level of difficulty based on the Revised Bloom's Taxonomy: 
+                      The user will specify the level of difficulty based on the Revised Bloom's Taxonomy:
+                      1. **Remembering:** Recall facts and basic concepts.
+                      2. **Understanding:** Explain ideas or concepts.
+                      3. **Applying:** Use information in new situations.
+                      4. **Analyzing:** Break down information into parts.
+                      5. **Evaluating:** Make judgments based on criteria and standards.
+                      6. **Creating:** Put parts together to form a coherent whole. 
                       {content}
 
-                    **Output Requirements**:
-                        - Always generate the questions and answers in the following format:
-                        {format_instructions}
-
-                      Instructions:
-                      - Directly generate the requested questions and answers. 
-                      - Do not provide any commentary, explanations, or context about the topic or your process.
-                      - Do not think step-by-step or describe your reasoning.
-                      - If you encounter unfamiliar content, still generate questions based on the provided instructions.
-                      - Your output must only include the generated questions and their answers in the exact requested format.
+                      {format_instructions} You must always return valid JSON fenced by a markdown code block. Do not return any additional text.
                       
                       Here is the query: {user_query}
 
